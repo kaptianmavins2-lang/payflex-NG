@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PayFlex NG</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#172033;font-family:Arial,sans-serif}.app{max-width:440px;min-height:100vh;margin:auto;background:#fff;padding-bottom:75px}header{background:linear-gradient(135deg,#075e54,#0b9c83);color:#fff;padding:22px 20px;border-radius:0 0 24px 24px}.row{display:flex;justify-content:space-between;align-items:center}.logo{font-size:23px;font-weight:bold}.balance{font-size:30px;font-weight:bold;margin:7px 0}.muted{font-size:13px;opacity:.8;margin-top:20px}main{padding:18px}.heading{font-weight:bold;font-size:18px;margin:18px 0 12px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.service{border:0;border-radius:14px;background:#f4f7f8;padding:15px 4px;font-weight:bold;min-height:90px}.icon{display:block;font-size:25px;margin-bottom:8px}.card{background:#f8fafc;border-radius:15px;padding:15px;margin:12px 0}label{font-size:13px;font-weight:bold}input,select{width:100%;padding:13px;border:1px solid #d9e1e8;border-radius:10px;margin:7px 0 14px;font-size:15px;background:white}.primary{width:100%;padding:14px;background:#087f6e;color:white;border:0;border-radius:10px;font-size:16px;font-weight:bold}.secondary{padding:9px 12px;border:1px solid #d9e1e8;background:white;border-radius:9px}.notice{font-size:13px;line-height:1.5;background:#eef8f5;padding:12px;border-radius:10px;margin:12px 0}.hint{font-size:12px;color:#667085;line-height:1.5}.hidden{display:none!important}.txn{padding:12px 0;border-bottom:1px solid #e8edf1;font-size:14px}nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(440px,100%);display:flex;justify-content:space-around;background:white;border-top:1px solid #eee;padding:11px 0}nav button{border:0;background:white;font-size:12px}nav b{display:block;font-size:20px}
+</style>
+<meta name="theme-color" content="#075e54">
+<meta name="description" content="PayFlex NG payment app interface">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+
+</head><body><div class="app">
+<section id="login" style="padding:28px 20px;min-height:100vh;background:#f8fafc;display:flex;flex-direction:column;justify-content:center">
+  <div style="font-size:27px;font-weight:800;color:#075e54;margin-bottom:8px">PayFlex NG</div>
+  <h2 style="margin:0 0 8px">Welcome back</h2>
+  <p class="hint" style="margin-bottom:22px">Log in with your phone number or email.</p>
+  <div class="card" style="background:white">
+    <label for="loginId">Phone number or email</label>
+    <input id="loginId" type="text" autocomplete="username" placeholder="e.g. 08012345678 or you@email.com">
+    <label for="loginPin">Password</label>
+    <input id="loginPin" type="password" autocomplete="current-password" placeholder="Enter your password">
+    <button class="primary" onclick="login()">Log in</button>
+    <p class="hint" style="margin-top:14px">New to PayFlex NG?</p>
+    <button class="secondary" style="width:100%" onclick="showSignup()">Create account</button>
+    <p class="hint" style="margin-top:12px">Prototype login only. Real account security requires a backend and secure authentication.</p>
+  </div>
+</section>
+<section id="signup" class="hidden" style="padding:28px 20px;min-height:100vh;background:#f8fafc">
+  <div style="font-size:27px;font-weight:800;color:#075e54">PayFlex NG</div><h2>Create account</h2>
+  <div class="card" style="background:white">
+    <label for="signupName">Full name</label><input id="signupName" autocomplete="name" placeholder="Enter your full name">
+    <label for="signupId">Phone number or email</label><input id="signupId" autocomplete="username" placeholder="Phone number or email">
+    <label for="signupPin">Create password</label><input id="signupPin" type="password" autocomplete="new-password" minlength="8" placeholder="Create a password (at least 8 characters)">
+    <label for="signupPin2">Confirm password</label><input id="signupPin2" type="password" autocomplete="new-password" minlength="8" placeholder="Re-enter your password">
+    <button class="primary" onclick="signup()">Create account</button>
+    <button class="secondary" style="width:100%;margin-top:10px" onclick="showLogin()">Back to login</button>
+    <p class="hint">Prototype account creation stores credentials only in this browser. Do not use a PIN you use for banking. Production login needs a secure backend.</p>
+  </div>
+</section>
+<div id="mainApp" class="hidden">
+<header><div class="row"><div class="logo">PayFlex NG</div><span>🔔</span></div><div class="muted">Wallet balance</div><div class="balance">₦0.00</div><div class="row"><span>Secure wallet</span><button class="secondary" onclick="notice()">＋ Add money</button></div></header>
+<main id="home"><div class="heading">Pay for services</div><div class="grid">
+<button class="service" onclick="openSvc('airtime')"><span class="icon">📱</span>Airtime</button><button class="service" onclick="openSvc('data')"><span class="icon">🌐</span>Data</button><button class="service" onclick="openSvc('betting')"><span class="icon">⚽</span>Betting</button><button class="service" onclick="openSvc('electricity')"><span class="icon">💡</span>Electricity</button><button class="service" onclick="openSvc('tv')"><span class="icon">📺</span>TV bills</button><button class="service" onclick="openSvc('school')"><span class="icon">🎓</span>School fees</button><button class="service" onclick="openSvc('internet')"><span class="icon">📡</span>Internet</button><button class="service" onclick="openSvc('transport')"><span class="icon">🚌</span>Transport</button><button class="service" onclick="openSvc('other')"><span class="icon">💳</span>Other fees</button></div>
+<div class="heading">Recent transactions</div><div class="card" id="recent"><p class="hint">No transactions yet.</p></div></main>
+<main id="payment" class="hidden"><button class="secondary" onclick="page('home')">← Back</button><h2 id="title">Payment</h2><div class="notice">Service charge: <b>₦50.00</b> per transaction. The fee destination configured is Moniepoint account ending <b>0497</b>. The account holder must verify the account and authorize fee collection before live use.</div>
+<div class="card"><label id="accountLabel">Phone or account number</label><input id="account" placeholder="Enter account details"><label>Provider</label><select id="provider"></select><label>Payment amount (₦)</label><input id="amount" type="number" min="100" placeholder="Enter amount" oninput="updateTotal()"><div class="notice" id="total">Service charge: ₦50.00<br>Total payable: —</div><button class="primary" onclick="pay()">Review payment</button></div>
+<p class="hint">Real payments and automatic fee transfers are not active until the secure backend and licensed payment provider are connected. No money is charged by this prototype.</p></main>
+<main id="history" class="hidden"><h2>Transaction history</h2><div class="card" id="historyList"><p class="hint">No transactions yet.</p></div></main>
+<main id="wallet" class="hidden"><h2>Wallet</h2><div class="card"><div class="balance">₦0.00</div><button class="primary" onclick="notice()">＋ Add money</button></div><p class="hint">Wallet funding requires a connected payment provider and secure backend.</p></main>
+<nav><button onclick="page('home')"><b>⌂</b>Home</button><button onclick="openSvc('airtime')"><b>＋</b>Pay</button><button onclick="page('history')"><b>🧾</b>History</button><button onclick="page('wallet')"><b>👛</b>Wallet</button></nav>
+</div>
+<script>
+const FEE=50, FEE_ACCOUNT='8169150497', FEE_BANK='Moniepoint';let current='',tx=[];
+const svc={
+airtime:['Buy Airtime','Phone number',['MTN','Airtel','Glo','9mobile']],
+data:['Buy Data','Phone number',['MTN','Airtel','Glo','9mobile']],
+betting:['Betting Wallet Funding','Betting account ID or phone',['Bet9ja','SportyBet','1xBet','Betway','NairaBET']],
+electricity:['Electricity Bill','Meter number',['PHED','IKEDC','EKEDC','AEDC','IBEDC']],
+tv:['TV Subscription','Smartcard / IUC number',['DStv','GOtv','Startimes']],
+school:['School & Exam Fees','Student / registration number',['School fees','WAEC','JAMB','Other exam fee']],
+internet:['Internet Bill','Account number',['Spectranet','Smile','MTN Broadband','Airtel Broadband']],
+transport:['Transport & Travel','Booking reference',['Road transport','Flight','Train','Other']],
+other:['Other Fees','Reference / account number',['Government fee','Association fee','Service fee','Other']]
+};
+function page(id){['home','payment','history','wallet'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(id).classList.remove('hidden')}
+function openSvc(k){current=k;let s=svc[k];page('payment');document.getElementById('title').textContent=s[0];document.getElementById('accountLabel').textContent=s[1];document.getElementById('account').placeholder=s[1];document.getElementById('provider').innerHTML=s[2].map(x=>'<option>'+x+'</option>').join('');document.getElementById('amount').value='';updateTotal()}
+function updateTotal(){let n=Number(document.getElementById('amount').value);document.getElementById('total').innerHTML='Service charge: ₦'+FEE.toFixed(2)+'<br>Total payable: '+(n>0?'₦'+(n+FEE).toLocaleString('en-NG',{minimumFractionDigits:2,maximumFractionDigits:2}):'—')+'<br><span class="hint">Fee destination: '+FEE_BANK+' · '+FEE_ACCOUNT+'</span>'}
+function notice(){alert('Real wallet funding and automatic fee settlement require a secure backend and a connected payment provider. No money has been transferred.')}
+function pay(){let account=document.getElementById('account').value.trim(),n=Number(document.getElementById('amount').value),provider=document.getElementById('provider').value;if(!account||!Number.isFinite(n)||n<100){alert('Enter account details and an amount of at least ₦100.');return}let total=n+FEE;if(confirm('Review transaction\\n'+svc[current][0]+' — '+provider+'\\nAccount: '+account+'\\nAmount: ₦'+n.toLocaleString('en-NG')+'\\nService charge: ₦'+FEE.toFixed(2)+'\\nTotal: ₦'+total.toLocaleString('en-NG')+'\\nFee destination: Moniepoint / '+FEE_ACCOUNT+'\\n\\nThis is a configuration preview only. No money will be charged or transferred.'))alert('No payment was processed. Connect and verify a licensed payment provider before enabling real transactions.')}
+function showLogin(){document.getElementById('login').classList.remove('hidden');document.getElementById('signup').classList.add('hidden');document.getElementById('mainApp').classList.add('hidden')}
+function showSignup(){document.getElementById('login').classList.add('hidden');document.getElementById('signup').classList.remove('hidden');document.getElementById('mainApp').classList.add('hidden')}
+function login(){const id=document.getElementById('loginId').value.trim().toLowerCase(),pin=document.getElementById('loginPin').value;const saved=JSON.parse(localStorage.getItem('payflex_user')||'null');if(!id||!pin){alert('Enter your phone/email and password.');return}if(!saved||saved.id!==id||saved.pin!==pin){alert('Account not found or incorrect password. Create an account first, or use the account you registered in this browser.');return}document.getElementById('login').classList.add('hidden');document.getElementById('signup').classList.add('hidden');document.getElementById('mainApp').classList.remove('hidden')}
+function signup(){const name=document.getElementById('signupName').value.trim(),id=document.getElementById('signupId').value.trim().toLowerCase(),pin=document.getElementById('signupPin').value,pin2=document.getElementById('signupPin2').value;if(!name||!id){alert('Enter your name and phone/email.');return}if(pin.length<8){alert('Password must contain at least 8 characters.');return}if(pin!==pin2){alert('Passwords do not match.');return}localStorage.setItem('payflex_user',JSON.stringify({name,id,pin}));alert('Account created in this browser. This is not a secure production account yet.');document.getElementById('loginId').value=id;document.getElementById('loginPin').value='';showLogin()}
+showLogin();
+</script></div>
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
+}
+</script>
+</body></html>
